@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon'
 import { RestService } from '../../services/rest.service';
 import { Router } from '@angular/router';
 import { ListenerService } from '../../services/listener.service';
+import ManageToken from '../../lib/manageToken';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +23,7 @@ export class LoginComponent {
     password: new FormControl('', { validators: [Validators.required] })
   })
   public matcher = new ErrorStateMatcher()
+  private manageToken = new ManageToken()
 
   constructor(
     private rest: RestService, 
@@ -37,6 +39,14 @@ export class LoginComponent {
     this.rest.login(this.form.value).subscribe(res => {
       localStorage.setItem('token', res.data);
       this.listener.token.emit(res.data);
+
+      const decodedToken = this.manageToken.decodedToken();
+
+      // partialuser
+      this.rest.getUser(parseInt(decodedToken.nameid)).subscribe(rsp => {
+        this.listener.partialUser.emit(rsp.data)
+      })
+      
       this.router.navigate(['dashboard']);
     }, err => {
 

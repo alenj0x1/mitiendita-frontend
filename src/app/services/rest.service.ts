@@ -10,10 +10,11 @@ export class RestService {
   private apiEndpoints = {
     app: {
       default: 'app',
-      login: 'app/login'
+      login: 'app/login',
+      getUser: 'app/getUser/'
     },
     admin: {
-      create: 'admin/create'
+      create: 'admin/create',
     }
   }
 
@@ -26,6 +27,10 @@ export class RestService {
 
   login(form:any) {
     return this.http.post<IApiResponse>(this.baseUrl + this.apiEndpoints.app.login, form);
+  }
+
+  getUser(userId: number) {
+    return this.http.get<IApiResponse>(this.baseUrl + this.apiEndpoints.app.getUser + userId);
   }
 
   // Admin

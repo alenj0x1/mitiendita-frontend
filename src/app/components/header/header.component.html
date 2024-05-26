@@ -9,8 +9,10 @@
     <mat-menu #menu="matMenu">
       @for (item of menuItems; track $index) {
         @if (token) {
-          @if (item.logged) {
-            <a mat-menu-item [routerLink]="item.routerLink">{{item.name}}</a>
+          @if (partialUser && item.userRole >= partialUser.userRole) {
+            @if (item.logged) {
+              <a mat-menu-item [routerLink]="item.routerLink">{{item.name}}</a>
+            }
           }
         }
         @else {

@@ -3,11 +3,12 @@ import { MatMenuModule } from '@angular/material/menu'
 import { MatIconModule } from '@angular/material/icon'
 import { RouterModule } from '@angular/router';
 import { ListenerService } from '../../services/listener.service';
+import IPartialUser from '../../interfaces/IPartialUser';
 
 interface IMenuItem {
   name: string;
   logged: boolean;
-  userRole?: number;
+  userRole: number;
   isButton?: boolean;
   icon?: string;
   routerLink?: string;
@@ -22,17 +23,19 @@ interface IMenuItem {
 })
 export class HeaderComponent {
   public token: string|null = ''
+  public partialUser: IPartialUser|null = null;
   public menuItems: IMenuItem[] = [
     {
       name: 'Iniciar sesión',
       logged: false,
-      routerLink: 'login'
+      routerLink: 'login',
+      userRole: 5
     },
     {
       name: 'Crear un administrador',
       logged: true,
       userRole: 1,
-      routerLink: 'superadmin/createAdmin'
+      routerLink: 'superadmin/createAdmin',
     },
     {
       name: 'Crear una tienda',
@@ -43,17 +46,26 @@ export class HeaderComponent {
     {
       name: 'Cerrar sesión',
       logged: true,
-      routerLink: 'logout'
+      routerLink: 'logout',
+      userRole: 5
     },
   ]
 
   constructor(private listener: ListenerService) {
+    // Setting token
     this.listener.token.subscribe(token => {
       this.token = token;
     })
 
+    // Setting partialUser
+    this.listener.partialUser.subscribe((partialUser) => {
+      this.partialUser = partialUser;
+    })
+
+    // Token deleted
     this.listener.tokenDeleted.subscribe(() => {
       this.token = null;
+      this.partialUser = null;
     })
   }
 }
