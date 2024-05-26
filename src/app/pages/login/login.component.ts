@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input'
 import { MatIconModule } from '@angular/material/icon'
 import { RestService } from '../../services/rest.service';
 import { Router } from '@angular/router';
+import { ListenerService } from '../../services/listener.service';
 
 @Component({
   selector: 'app-login',
@@ -22,12 +23,23 @@ export class LoginComponent {
   })
   public matcher = new ErrorStateMatcher()
 
-  constructor(private rest: RestService, private router: Router) {}
+  constructor(
+    private rest: RestService, 
+    private router: Router,
+    private listener: ListenerService
+  ) {}
 
   changePasswordView() {
     this.hidePassword = !this.hidePassword
   }
 
   onLogin() {
+    this.rest.login(this.form.value).subscribe(res => {
+      localStorage.setItem('token', res.data);
+      this.listener.token.emit(res.data);
+      this.router.navigate(['dashboard']);
+    }, err => {
+
+    })
   }
 }

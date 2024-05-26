@@ -9,7 +9,8 @@ export class RestService {
   private baseUrl = 'http://localhost:5271/api/'
   private apiEndpoints = {
     app: {
-      default: 'app'
+      default: 'app',
+      login: 'app/login'
     },
     admin: {
       create: 'admin/create'
@@ -21,6 +22,10 @@ export class RestService {
   // App
   checkApp() {
     return this.http.get<IApiResponse>(this.baseUrl + this.apiEndpoints.app.default);
+  }
+
+  login(form:any) {
+    return this.http.post<IApiResponse>(this.baseUrl + this.apiEndpoints.app.login, form);
   }
 
   // Admin

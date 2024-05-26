@@ -8,7 +8,16 @@
     </button>
     <mat-menu #menu="matMenu">
       @for (item of menuItems; track $index) {
-        <a mat-menu-item [routerLink]="item.routerLink">{{item.name}}</a>
+        @if (token) {
+          @if (item.logged) {
+            <a mat-menu-item [routerLink]="item.routerLink">{{item.name}}</a>
+          }
+        }
+        @else {
+          @if (!item.logged) {
+            <a mat-menu-item [routerLink]="item.routerLink">{{item.name}}</a>
+          }
+        }
       }
     </mat-menu>
   </div>
@@ -16,7 +25,16 @@
   <div class="md:block hidden">
     <ul class="flex text-white gap-4">
       @for (item of menuItems; track $index) {
-        <li class="menu-link" [routerLink]="item.routerLink">{{item.name}}</li>
+        @if (token) {
+          @if (item.logged) {
+            <li class="menu-link" [routerLink]="item.routerLink">{{item.name}}</li>
+          }
+        }
+        @else {
+          @if (!item.logged) {
+            <li class="menu-link" [routerLink]="item.routerLink">{{item.name}}</li>
+          }
+        }
       }
     </ul>
   </div>

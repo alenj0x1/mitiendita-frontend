@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu'
 import { MatIconModule } from '@angular/material/icon'
 import { RouterModule } from '@angular/router';
+import { ListenerService } from '../../services/listener.service';
 
 interface IMenuItem {
   name: string;
@@ -20,6 +21,7 @@ interface IMenuItem {
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  public token: string|null = ''
   public menuItems: IMenuItem[] = [
     {
       name: 'Iniciar sesión',
@@ -40,7 +42,18 @@ export class HeaderComponent {
     },
     {
       name: 'Cerrar sesión',
-      logged: true
+      logged: true,
+      routerLink: 'logout'
     },
   ]
+
+  constructor(private listener: ListenerService) {
+    this.listener.token.subscribe(token => {
+      this.token = token;
+    })
+
+    this.listener.tokenDeleted.subscribe(() => {
+      this.token = null;
+    })
+  }
 }
