@@ -1,0 +1,47 @@
+<form class="layout flex flex-col gap-4" [formGroup]="form">
+  <div class="flex flex-col gap-2">
+    <h2 class="subt">Creación de un super administrador</h2>
+    <p class="para">La aplicación se está iniciado por primera vez, por lo que se debe crear un super administrador. Un super administrador es el único usuario en la aplicación que tiene autorización para crear administradores.</p>
+  </div>
+
+  <div class="flex flex-col">
+    <!-- Email -->
+    <mat-form-field>
+      <mat-label>Correo</mat-label>
+      <input type="email" matInput formControlName="mail" [errorStateMatcher]="matcher" placeholder="superadmin@mitiendita.com">
+      
+      @if (form.controls.mail.hasError('email') && !form.controls.mail.hasError('required')) {
+        <mat-error>Ingrese un correo valido.</mat-error>
+      }
+
+      @if (form.controls.mail.hasError('required')) {
+       <mat-error>El correo es un <strong>campo requerido.</strong></mat-error>
+     }
+   </mat-form-field>
+
+    <!-- Password -->
+    <mat-form-field>
+      <mat-label>Contraseña</mat-label>
+      <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="password" [errorStateMatcher]="matcher" placeholder="********">
+      <button mat-icon-button matSuffix (click)="changePasswordView()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+      <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    
+      @if (form.controls.password.hasError('required')) {
+      <mat-error>La contraseña es un <strong>campo requerido.</strong></mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Password Hint -->
+    <mat-form-field>
+      <mat-label>Pista de contraseña</mat-label>
+      <input type="text" matInput formControlName="passwordHint" [errorStateMatcher]="matcher" placeholder="mi pista">
+    
+      @if (form.controls.passwordHint.hasError('required')) {
+      <mat-error>La pista es un <strong>campo requerido.</strong></mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <button (click)="onCreate()" mat-raised-button [color]="form.valid ? 'primary' : ''" [disabled]="!form.valid">Crear</button>
+</form>

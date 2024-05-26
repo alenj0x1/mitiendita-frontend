@@ -1,1 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.header {
+  @apply bg-gray-700 py-6 px-10 flex justify-between items-center;
+}
+
+.subt {
+  @apply text-3xl font-semibold text-gray-700;
+}
+
+.para {
+  @apply text-sm;
+}
+
+.layout {
+  @apply m-10;
+}
+
+.menu-link {
+  @apply cursor-pointer hover:opacity-90 active:opacity-80;
+}

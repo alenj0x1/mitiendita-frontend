@@ -1,0 +1,37 @@
+<form class="layout flex flex-col gap-4" [formGroup]="form">
+  <div class="flex flex-col gap-2">
+    <h2 class="subt">Iniciar sesión</h2>
+    <p class="para">Inicie sesión con sus credenciales de acceso. Asegúrese de ingresar las credenciales correctas ya que la aplicación cambia en base al rol del usuario.</p>
+  </div>
+
+  <div class="flex flex-col">
+    <!-- Email -->
+    <mat-form-field>
+      <mat-label>Correo</mat-label>
+      <input type="email" matInput formControlName="mail" [errorStateMatcher]="matcher" placeholder="superadmin@mitiendita.com">
+      
+      @if (form.controls.mail.hasError('email') && !form.controls.mail.hasError('required')) {
+        <mat-error>Ingrese un correo valido.</mat-error>
+      }
+
+      @if (form.controls.mail.hasError('required')) {
+       <mat-error>El correo es un <strong>campo requerido.</strong></mat-error>
+     }
+   </mat-form-field>
+
+    <!-- Password -->
+    <mat-form-field>
+      <mat-label>Contraseña</mat-label>
+      <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="password" [errorStateMatcher]="matcher" placeholder="********">
+      <button mat-icon-button matSuffix (click)="changePasswordView()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+      <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    
+      @if (form.controls.password.hasError('required')) {
+      <mat-error>La contraseña es un <strong>campo requerido.</strong></mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <button (click)="onLogin()" mat-raised-button [color]="form.valid ? 'primary' : ''" [disabled]="!form.valid">Iniciar sesión</button>
+</form>
