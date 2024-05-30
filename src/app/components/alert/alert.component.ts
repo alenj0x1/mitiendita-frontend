@@ -12,7 +12,7 @@ export class AlertComponent {
   @Input({ required: true })
   public title: string = '';
   @Input({ required: false })
-  public description: string = 'asdasdasdasdaasdasdasdasd';
+  public description: string = '';
   // Styles using tailwindcss
   @Input({ required: false })
   public borderColor: string = 'border-gray-600';
