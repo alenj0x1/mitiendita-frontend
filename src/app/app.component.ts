@@ -5,11 +5,13 @@ import { HeaderComponent } from './components/header/header.component';
 import { ListenerService } from './services/listener.service';
 import ManageToken from './lib/manageToken';
 import IPartialUser from './interfaces/IPartialUser';
+import { AlertComponent } from './components/alert/alert.component';
+import IAlert from './interfaces/IAlert';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent],
+  imports: [RouterOutlet, HeaderComponent, AlertComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -17,6 +19,12 @@ export class AppComponent implements OnInit {
   public token: string|null = ''
   public partialUser: IPartialUser|null = null;
   private manageToken: ManageToken = new ManageToken();
+  
+  // Alert
+  public alert: IAlert = {
+    title: '',
+  }
+  public showAlert: boolean = false;
 
   constructor(
     private rest: RestService, 
@@ -51,6 +59,17 @@ export class AppComponent implements OnInit {
     // Token deleted
     this.listener.tokenDeleted.subscribe(() => {
       this.partialUser = null
+    })
+
+    // Alert activated
+    this.listener.alert.subscribe(alert => {
+      this.alert = alert;
+      this.showAlert = true;
+      this.alert.showSeconds = this.alert.showSeconds == undefined ? 3000 : this.alert.showSeconds;
+
+      setTimeout(() => {
+        this.showAlert = false;
+      }, this.alert.showSeconds);
     })
   }
 }

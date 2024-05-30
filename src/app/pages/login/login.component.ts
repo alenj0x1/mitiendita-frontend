@@ -28,7 +28,7 @@ export class LoginComponent {
   constructor(
     private rest: RestService, 
     private router: Router,
-    private listener: ListenerService
+    private listener: ListenerService,
   ) {}
 
   changePasswordView() {
@@ -45,11 +45,14 @@ export class LoginComponent {
       // partialuser
       this.rest.getUser(parseInt(decodedToken.nameid)).subscribe(rsp => {
         this.listener.partialUser.emit(rsp.data)
-      })
+      });
       
       this.router.navigate(['dashboard']);
-    }, err => {
-
+    }, ({ error }) => {
+      this.listener.alert.emit({
+        title: 'Ocurrió un error',
+        description: error.msg
+      })
     })
   }
 }
